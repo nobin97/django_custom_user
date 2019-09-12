@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+             <p class="display-4">Hello, {{ request.user.username }}</p>
+	{% else %}
+             <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
+	{% endif %}
+{% endblock content %}
