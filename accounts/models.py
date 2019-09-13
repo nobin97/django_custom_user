@@ -21,28 +21,30 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_staffuser(self, username, email, password):
+    def create_staffuser(self, username, email, password=None):
         """
         Creates and saves a staff user with the given email and password.
         """
-        user = self.create_user(
-            email,
-            username,
-            password=password,
+        user = self.model(
+            email=self.normalize_email(email),
+            username=username,
         )
+
+        user.set_password(password)
         user.staff = True
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, password):
+    def create_superuser(self, username, email, password=None):
         """
         Creates and saves a superuser with the given email and password.
         """
-        user = self.create_user(
-            email,
-            username,
-            password=password,
+        user = self.model(
+            email=self.normalize_email(email),
+            username=username,
         )
+
+        user.set_password(password)
         user.staff = True
         user.admin = True
         user.save(using=self._db)
@@ -65,7 +67,7 @@ class User(AbstractBaseUser):
     # notice the absence of a "Password field", that's built in.
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = [] # Email & Password are required by default.
+    REQUIRED_FIELDS = ['username'] # Email & Password are required by default.
     objects = UserManager()
 
     def get_full_name(self):
