@@ -107,3 +107,6 @@ class User(AbstractBaseUser):
         return self.active
 
 ## change for rebase
+##new branch
+# new commit
+# some more changes
